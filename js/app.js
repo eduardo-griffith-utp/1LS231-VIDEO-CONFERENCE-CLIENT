@@ -53,7 +53,7 @@ const App = {
           break;
         
         case "file":
-          this.files.push(json.file);
+          self.files.push(json.file);
           self.chats.push(json);
           break;
         }
