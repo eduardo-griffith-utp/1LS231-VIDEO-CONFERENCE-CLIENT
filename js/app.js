@@ -88,6 +88,29 @@ const App = {
   toggleVideo() {
     ApiRTCHelper.toggleVideo();
   },
+
+  async editNote(jsonNote) {
+    const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
+
+    if (editRes === true) {
+       await this.sendChat({
+        "action": "edit-note",
+	      "note": jsonNote
+       })
+    }
+  },
+
+  async deleteNote(noteId) {
+    const deleteRes = NotesHelper.delete(noteId);
+
+    if (deleteRes === true) {
+       await this.sendChat({
+        "action": "delete-note",
+        "id": noteId // id de la nota
+       })
+    }
+  },
+
 };
 
 document.addEventListener("alpine:init", () => {
