@@ -50,7 +50,12 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
-      }
+        
+        case "file":
+          self.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
     });
 
     await ApiRTCHelper.connect(
