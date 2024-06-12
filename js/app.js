@@ -27,6 +27,7 @@ const App = {
     }
   },
   async accessRoom() {
+    
     let self = this;
     this.room = this.roomName;
     this.roomName = null;
@@ -46,7 +47,12 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
-      }
+        
+        case "file":
+          this.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
     });
 
     await ApiRTCHelper.connect(
