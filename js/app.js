@@ -27,7 +27,6 @@ const App = {
     }
   },
   async accessRoom() {
-    
     let self = this;
     this.room = this.roomName;
     this.roomName = null;
