@@ -1,79 +1,103 @@
-document.addEventListener('alpine:init', () => {
-    Alpine.data('App', () => ({
-        userName: null,
-        room: null,
-        roomName: null,
-        channel: null,
-        mode: "light",
-        streamList: [],
-        chats: [],
-        message: "",
-        CallActions: new CallActions(),
-        
-        view: "call",
-        files: [],
-        notes:[],
-        toggleMode(){
-            if (this.mode == "light") {
-                this.mode = "dark";
-            } else {
-                this.mode = "light";
-            }
-        },
-        async accessRoom() {
-            let self = this;
-            this.room = this.roomName;
-            this.roomName = null;
-            
-            await AblyHelper.connect(this.room, (message) => {
-                console.log('Received a message in realtime: ' + message.data)
-                var json = JSON.parse(message.data);
-                switch(json.action) {
-                    case "chat":
-                        self.chats.push(json);
-                        break;
-                }
-            });
+const App = {
+  mode: "light",
+  view: "call",
 
-            
-            await ApiRTCHelper.connect(
-                this.room,
-                (streamInfo) => {
-                    this.streamList.push(streamInfo);
-                },
-                (stream) => {
-                    this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
-                }
-            );            
-        },
-        async sendMessage() {
-            console.log("publishing: " + this.message + " ...");
-            AblyHelper.send({ 
-                "action": "chat",
-                "message": this.message,
-                "sender": {
-                    "name": this.userName,
-                    "picture": "images/avatar.jpeg"
-                }
-            });
+  userName: null,
+  room: null,
+  roomName: null,
 
-            this.message = '';
-        },
-        toggleAudio(){
-            ApiRTCHelper.toggleAudio();
-        },
-        toggleVideo(){
-            ApiRTCHelper.toggleVideo();
-        }
-    }))
+  video: true,
+  audio: true,
+
+  message: "",
+
+  users: [],
+  streamList: [],
+  chats: [],
+  files: [],
+  notes: [],
+
+  CallActions: new CallActions(),
+
+  toggleMode() {
+    if (this.mode == "light") {
+      this.mode = "dark";
+    } else {
+      this.mode = "light";
+    }
+  },
+  async accessRoom() {
+    let self = this;
+    this.room = this.roomName;
+    this.roomName = null;
+
+    await AblyHelper.connect(this.room, (message) => {
+      console.log("Received a message in realtime: " + message.data);
+      var json = JSON.parse(message.data);
+      switch (json.action) {
+        case "user":         
+          if (
+              json.streamId != ApiRTCHelper.localStream.publishedInConversations.get(this.room) &&
+              !this.streamList.find(stream => stream.streamId == json.streamId)                        
+          ) {
+              this.streamList.push(json);
+          }      
+          break;        
+        case "chat":
+          self.chats.push(json);
+          break;
+      }
+    });
+
+    await ApiRTCHelper.connect(
+      this.room,
+      async (stream) => {              
+          await AblyHelper.send({ 
+              action: "user", 
+              user: this.userName, 
+              streamId: ApiRTCHelper.localStream.publishedInConversations.get(this.room) 
+          });  
+      },
+      (stream) => {
+          this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
+      }
+  );
+  },
+  async sendMessage() {
+    await this.sendChat({
+        "action": "chat",
+        "message": this.message,            
+    });
+    this.message = '';
+  },
+
+  async sendChat(chat) {
+      chat.sender = {
+          "name": this.userName,
+          "picture": "images/avatar.jpeg"
+      }
+      await AblyHelper.send(chat);
+  },
+  toggleAudio() {
+    ApiRTCHelper.toggleAudio();
+  },
+  toggleVideo() {
+    ApiRTCHelper.toggleVideo();
+  },
+};
+
+document.addEventListener("alpine:init", () => {
+  Alpine.data("App", () => (App));
 });
 
-window.ondragover = function(event) {
-    event.preventDefault();
+window.ondragover = function (event) {
+  event.preventDefault();
 };
- 
-window.ondrop = function(event) {
-    event.preventDefault();
-    const files = event.dataTransfer.files;
-    console.log(files);
+
+window.ondrop = async function (event) {
+  event.preventDefault();
+  const files = event.dataTransfer.files;
+  console.log(files);
 };
+
+firebase.initializeApp(CONFIG.Firebase);

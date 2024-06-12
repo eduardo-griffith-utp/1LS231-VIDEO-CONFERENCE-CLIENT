@@ -3,7 +3,10 @@
 		<link href="https://fonts.googleapis.com/css?family=DM+Sans:400,500,700&display=swap" rel="stylesheet" />
 		<link href="css/style.css" rel="stylesheet" />
 		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-		<script src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+		<script type="text/javascript" src="https://cdn.ably.com/lib/ably.min-1.js"></script>
+		<script type="text/javascript" src="https://cdn.apirtc.com/apiRTC/apiRTC-latest.min.js"></script>	
+		<script type="text/javascript" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>	
 	</head>
 	<body x-data="App" x-bind:class="mode">
 		<div class="waiting-room-container" x-show="!room">
@@ -65,26 +68,23 @@
 				</div>
 			</div>
 			<div class="app-main">
-				<div class="video-call-wrapper">
+				<div class="video-call-wrapper" x-show="view === 'call'">
 					<div class="video-participant">
-						<a href="#" class="name-tag">Andy Will</a>
+						<a href="#" class="name-tag" x-text="userName"></a>
 						<div id="publisher-container" class="stream-video-container">
 							<video id="publisher-video" autoplay="true" muted="true" width="320" height="240"></video>
 						</div>
-						
-						<div class ="files-wrapper">
-
-
-						</div>
 					</div>
 					<template x-for="stream in streamList">
-						<div class="video-participant" >
-							<a href="#" class="name-tag">Emmy Lou</a>
+						<div class="video-participant">
+							<a href="#" class="name-tag" x-text="stream.user"></a>
 							<div :id="`remote-${stream.streamId}`" class="stream-video-container">
 							</div>
 						</div>
 					</template>
 				</div>
+				<div class ="files-wrapper" x-show="view === 'files'"></div>
+				<div class ="notes-wrapper" x-show="view === 'notes'"></div>
 				<div class="video-call-actions ">
 					<button class="video-action-button mic" @click="toggleAudio"></button>
 					<button class="video-action-button camera" @click="toggleVideo"></button>
@@ -157,17 +157,18 @@
 				</svg>
 			</button>
 		</div>
-		<script type="text/javascript" src="https://cdn.apirtc.com/apiRTC/apiRTC-latest.min.js"></script>	
+
 		<script type="text/javascript" src="js/config.js"></script>	
+
+		<script type="text/javascript" src="js/classes/call-actions.js"></script>
+		<script type="text/javascript" src="js/classes/notes.js"></script>
 
 		<script type="text/javascript" src="js/helpers/ably.js"></script>
 		<script type="text/javascript" src="js/helpers/apiRTC.js"></script>
+		<script type="text/javascript" src="js/helpers/database.js"></script>		
 		<script type="text/javascript" src="js/helpers/storage.js"></script>
+		<script type="text/javascript" src="js/helpers/notes.js"></script>
 
-		<script type="text/javascript" src="js/app.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-		<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>	
-
-		<script type = "text/javascript" scr = "js/classes/call-actions.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>	
 	</body>
 </html>
