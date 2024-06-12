@@ -35,8 +35,7 @@ class NotesHelper {
         ];
     }
 
-    static edit(noteId, note) {
-        return true;
+    static edit(note) {
+      return DatabaseHelper.editNote(note)
     }
-
 }
