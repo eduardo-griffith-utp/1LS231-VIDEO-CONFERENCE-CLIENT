@@ -6,7 +6,9 @@ class NotesHelper {
     }
     
     static delete(noteId) {
-        return true;
+        return DatabaseHelper.deleteNote(noteId);
+
+
     }
 
 
@@ -38,5 +40,6 @@ class NotesHelper {
     static edit(noteId, note) {
         return true;
     }
+
 
 }
