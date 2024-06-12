@@ -32,6 +32,10 @@ const App = {
     this.room = this.roomName;
     this.roomName = null;
 
+     // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
+     this.notes = NotesHelper.getList(this.room);
+
+
     await AblyHelper.connect(this.room, (message) => {
       console.log("Received a message in realtime: " + message.data);
       var json = JSON.parse(message.data);
