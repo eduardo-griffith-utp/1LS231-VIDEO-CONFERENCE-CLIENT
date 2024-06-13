@@ -105,7 +105,6 @@ const App = {
     this.userName = null;
   },
 
-
   async upload(file) {
     let path = `${this.room}/${file.name}`;
     let value = StorageHelper.upload(file, path, ()=>{} );
