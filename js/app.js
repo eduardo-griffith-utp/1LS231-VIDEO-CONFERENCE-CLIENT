@@ -50,7 +50,12 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
-      }
+        
+        case "file":
+          self.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
     });
 
     await ApiRTCHelper.connect(
@@ -65,7 +70,7 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
-  );
+    );
   },
   async sendMessage() {
     await this.sendChat({
