@@ -100,14 +100,8 @@ const App = {
     this.notes = [];
     this.room = null;
     this.userName = null;
-},
+  },
 
-  toggleAudio() {
-    ApiRTCHelper.toggleAudio();
-  },
-  toggleVideo() {
-    ApiRTCHelper.toggleVideo();
-  },
 
   async upload(file) {
     let path = `${this.room}/${file.name}`;
@@ -141,8 +135,7 @@ const App = {
         "id": noteId // id de la nota
        })
     }
-  },
-
+  }
 };
 
 document.addEventListener("alpine:init", () => {
