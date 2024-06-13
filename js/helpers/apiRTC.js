@@ -75,6 +75,26 @@ class ApiRTCHelper {
         }
     }
 
+
+
+        //SALIR DE LA CONVERSACION
+        static leave() {
+            if (this.conversation) {
+                this.conversation.leave()
+                    .then(() => {
+                        console.log('Has salido de la conversacion.');
+                    })
+                    .catch((error) => {
+                        console.error('Error al salir de la conversacion:', error);
+                    });
+            } else {
+                console.error('No hay conversacion de la que puedas salir.');
+            }
+        }
+
+        
+        
+
     static toggleAudio() {
         if (this.localStream) {
             if (this.localStream.isAudioEnabled()) {
@@ -98,6 +118,13 @@ class ApiRTCHelper {
             console.error('No local stream available to toggle video.');
         }
     }
+    
+    leaveConversation(showAlert) {
+        this.callActions.leaveConversation(showAlert);
+    }
+
+
+
 
     static isAudioEnabled() {
         if (this.localStream) {
