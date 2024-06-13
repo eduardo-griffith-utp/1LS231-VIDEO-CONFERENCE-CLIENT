@@ -31,6 +31,13 @@ const App = {
     this.room = this.roomName;
     this.roomName = null;
 
+<<<<<<< HEAD
+=======
+     // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
+     this.notes = NotesHelper.getList(this.room);
+
+
+>>>>>>> main
     await AblyHelper.connect(this.room, (message) => {
       console.log("Received a message in realtime: " + message.data);
       var json = JSON.parse(message.data);
@@ -46,7 +53,16 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
+<<<<<<< HEAD
       }
+=======
+        
+        case "file":
+          self.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
+>>>>>>> main
     });
 
     await ApiRTCHelper.connect(
@@ -61,7 +77,11 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
+<<<<<<< HEAD
   );
+=======
+    );
+>>>>>>> main
   },
   async sendMessage() {
     await this.sendChat({
@@ -78,12 +98,56 @@ const App = {
       }
       await AblyHelper.send(chat);
   },
+<<<<<<< HEAD
+=======
+
+  async leaveConversation(showAlert) {
+    if (showAlert) {
+        const confirmLeave = confirm("Estás seguro que deseas abandonar la conversacion?");
+        if (!confirmLeave) return;
+    }
+
+    await this.CallActions.leaveConversation();
+    this.files = [];
+    this.chats = [];
+    this.notes = [];
+    this.room = null;
+    this.userName = null;
+},
+
+>>>>>>> main
   toggleAudio() {
     ApiRTCHelper.toggleAudio();
   },
   toggleVideo() {
     ApiRTCHelper.toggleVideo();
   },
+<<<<<<< HEAD
+=======
+
+  async editNote(jsonNote) {
+    const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
+
+    if (editRes === true) {
+       await this.sendChat({
+        "action": "edit-note",
+	      "note": jsonNote
+       })
+    }
+  },
+
+  async deleteNote(noteId) {
+    const deleteRes = NotesHelper.delete(noteId);
+
+    if (deleteRes === true) {
+       await this.sendChat({
+        "action": "delete-note",
+        "id": noteId // id de la nota
+       })
+    }
+  },
+
+>>>>>>> main
 };
 
 document.addEventListener("alpine:init", () => {
