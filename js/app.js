@@ -85,8 +85,15 @@ const App = {
           "name": this.userName,
           "picture": "images/avatar.jpeg"
       }
-     
+    
       await AblyHelper.send(chat);
+
+      try{
+        await DatabaseHelper.saveChat(chat);
+        console.log("Chat enviado exitosamente.");
+      } catch (error) {
+        console.error("Error al enviar el chat:", error);
+      }
   },
   toggleAudio() {
     ApiRTCHelper.toggleAudio();
