@@ -10,13 +10,9 @@ class CallActions {
         }
     
     // Agregar método leaveConversation 
-    leaveConversation(showAlert) {
-        if (showAlert) {
-            const confirmLeave = confirm("Estás seguro que deseas abandonar la conversacion?");
-            if (!confirmLeave) return;
-        }
-        ApiRTCHelper.leave();
-    }
+    async leaveConversation() {
+        await ApiRTCHelper.leaveConversation();   
+     }
 }
     
     

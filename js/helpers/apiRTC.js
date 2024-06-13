@@ -75,26 +75,6 @@ class ApiRTCHelper {
         }
     }
 
-
-
-        //SALIR DE LA CONVERSACION
-        static leave() {
-            if (this.conversation) {
-                this.conversation.leave()
-                    .then(() => {
-                        console.log('Has salido de la conversacion.');
-                    })
-                    .catch((error) => {
-                        console.error('Error al salir de la conversacion:', error);
-                    });
-            } else {
-                console.error('No hay conversacion de la que puedas salir.');
-            }
-        }
-
-        
-        
-
     static toggleAudio() {
         if (this.localStream) {
             if (this.localStream.isAudioEnabled()) {
@@ -119,13 +99,6 @@ class ApiRTCHelper {
         }
     }
     
-    leaveConversation(showAlert) {
-        this.callActions.leaveConversation(showAlert);
-    }
-
-
-
-
     static isAudioEnabled() {
         if (this.localStream) {
             return this.localStream.isAudioEnabled();
@@ -141,6 +114,19 @@ class ApiRTCHelper {
         } else {
             console.error('No hay stream local disponible para verificar el estado del video.');
             return false;
+        }
+    }
+
+    static async leaveConversation() {
+        try {
+            this.conversation.unpublish(this.localStream);
+            this.conversation.leave();
+            this.localStream.data.getTracks().forEach((track) => {
+                track.stop();
+            });
+            await this.session.disconnect()
+        } catch (e) {
+            console.log(e);
         }
     }
 }
