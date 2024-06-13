@@ -11,7 +11,7 @@ class StorageHelper{
         return true; 
     }
 
-    static download(file, path) {  
+    static download(path) {  
         return "https://google.com";
     }
 }

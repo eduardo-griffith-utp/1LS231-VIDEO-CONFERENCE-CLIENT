@@ -30,6 +30,12 @@ const App = {
     let self = this;
     this.room = this.roomName;
     this.roomName = null;
+     // Inicializar el arreglo files con el resultado del llamado a getList de StorageHelper
+    this.files =  StorageHelper.getFiles();
+
+     // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
+     this.notes = NotesHelper.getList(this.room);
+
 
     await AblyHelper.connect(this.room, (message) => {
       console.log("Received a message in realtime: " + message.data);
@@ -46,7 +52,12 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
-      }
+        
+        case "file":
+          self.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
     });
 
     await ApiRTCHelper.connect(
@@ -63,6 +74,7 @@ const App = {
       }
   );
   },
+
   async sendMessage() {
     await this.sendChat({
         "action": "chat",
@@ -77,6 +89,54 @@ const App = {
           "picture": "images/avatar.jpeg"
       }
       await AblyHelper.send(chat);
+  },
+
+  async leaveConversation(showAlert) {
+    if (showAlert) {
+        const confirmLeave = confirm("Estás seguro que deseas abandonar la conversacion?");
+        if (!confirmLeave) return;
+    }
+
+    await this.CallActions.leaveConversation();
+    this.files = [];
+    this.chats = [];
+    this.notes = [];
+    this.room = null;
+    this.userName = null;
+  },
+
+  async upload(file) {
+    let path = `${this.room}/${file.name}`;
+    let value = StorageHelper.upload(file, path, ()=>{} );
+    if(value){
+      let chat = {
+        "action": "file",
+        "file": path
+      };
+      await this.sendChat(chat);
+    }
+  },
+  
+  async editNote(jsonNote) {
+    const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
+
+    if (editRes === true) {
+       await this.sendChat({
+        "action": "edit-note",
+	      "note": jsonNote
+       })
+    }
+  },
+
+  async deleteNote(noteId) {
+    const deleteRes = NotesHelper.delete(noteId);
+
+    if (deleteRes === true) {
+       await this.sendChat({
+        "action": "delete-note",
+        "id": noteId // id de la nota
+       })
+    }
   }
 };
 

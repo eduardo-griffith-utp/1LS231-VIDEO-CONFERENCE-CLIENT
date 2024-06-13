@@ -6,16 +6,16 @@ class CallActions {
             return ApiRTCHelper.toggleAudio();
         }
     //agregar metodo toggle video 
-        toggleVideo() {
-            return Math.random() < 0.5;
+        toggleVideo() { 
+            ApiRTCHelper.toggleVideo();
+            return ApiRTCHelper.toggleVideo();
         }
     
-    // agregar metodo leaveConversation que recibe un parámetro
-        leaveConversation(param) {
-    //generar alerta 
-            alert("To be implemented");
-        }
-    }
+    // Agregar método leaveConversation 
+    async leaveConversation() {
+        await ApiRTCHelper.leaveConversation();   
+     }
+}
     
     
     
