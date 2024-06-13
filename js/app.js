@@ -70,7 +70,7 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
-  );
+    );
   },
   async sendMessage() {
     await this.sendChat({
