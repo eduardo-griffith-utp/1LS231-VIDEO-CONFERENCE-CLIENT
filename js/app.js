@@ -30,6 +30,8 @@ const App = {
     let self = this;
     this.room = this.roomName;
     this.roomName = null;
+     // Inicializar el arreglo files con el resultado del llamado a getList de StorageHelper
+    this.files =  StorageHelper.getFiles();
 
      // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
      this.notes = NotesHelper.getList(this.room);
@@ -70,8 +72,9 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
-    );
+  );
   },
+
   async sendMessage() {
     await this.sendChat({
         "action": "chat",
