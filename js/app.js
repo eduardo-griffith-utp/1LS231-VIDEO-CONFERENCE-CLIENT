@@ -31,6 +31,10 @@ const App = {
     this.room = this.roomName;
     this.roomName = null;
 
+     // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
+     this.notes = NotesHelper.getList(this.room);
+
+
     await AblyHelper.connect(this.room, (message) => {
       console.log("Received a message in realtime: " + message.data);
       var json = JSON.parse(message.data);
@@ -46,7 +50,12 @@ const App = {
         case "chat":
           self.chats.push(json);
           break;
-      }
+        
+        case "file":
+          self.files.push(json.file);
+          self.chats.push(json);
+          break;
+        }
     });
 
     await ApiRTCHelper.connect(
@@ -61,7 +70,7 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
-  );
+    );
   },
   async sendMessage() {
     await this.sendChat({
@@ -78,6 +87,21 @@ const App = {
       }
       await AblyHelper.send(chat);
   },
+
+  async leaveConversation(showAlert) {
+    if (showAlert) {
+        const confirmLeave = confirm("Estás seguro que deseas abandonar la conversacion?");
+        if (!confirmLeave) return;
+    }
+
+    await this.CallActions.leaveConversation();
+    this.files = [];
+    this.chats = [];
+    this.notes = [];
+    this.room = null;
+    this.userName = null;
+},
+
   toggleAudio() {
     ApiRTCHelper.toggleAudio();
   },
@@ -95,7 +119,29 @@ const App = {
       };
       await this.sendChat(chat);
     }
-  }
+  },
+  
+  async editNote(jsonNote) {
+    const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
+
+    if (editRes === true) {
+       await this.sendChat({
+        "action": "edit-note",
+	      "note": jsonNote
+       })
+    }
+  },
+
+  async deleteNote(noteId) {
+    const deleteRes = NotesHelper.delete(noteId);
+
+    if (deleteRes === true) {
+       await this.sendChat({
+        "action": "delete-note",
+        "id": noteId // id de la nota
+       })
+    }
+  },
 
 };
 
