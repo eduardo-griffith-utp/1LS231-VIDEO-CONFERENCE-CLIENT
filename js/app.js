@@ -94,6 +94,7 @@ const App = {
         if (!confirmLeave) return;
     }
 
+      
     await this.CallActions.leaveConversation();
     this.files = [];
     this.chats = [];
@@ -101,6 +102,8 @@ const App = {
     this.room = null;
     this.userName = null;
 },
+
+
 
   toggleAudio() {
     ApiRTCHelper.toggleAudio();
@@ -118,6 +121,10 @@ const App = {
 	      "note": jsonNote
        })
     }
+  },
+
+  async goHome(){
+    this.leaveConversation(false)
   },
 
   async deleteNote(noteId) {
