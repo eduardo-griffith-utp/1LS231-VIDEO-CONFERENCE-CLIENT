@@ -33,8 +33,22 @@ class DatabaseHelper {
         ];
     }
 
-    static addNote(note){
-        return "123456";
+    static addNote(note) {
+        let promesa = new Promise((resolve, reject) => {
+            
+            const databaseRef = firebase.database().ref('notes');         
+            const newNoteRef = databaseRef.push();    
+       
+            newNoteRef.set(note).then(() => {
+                console.log(newNoteRef.key);
+                resolve(newNoteRef.key);
+            })
+            .catch((error) => {
+                reject(error);
+            });
+        });
+
+        return promesa;
     }
 
     static editNote(note){
