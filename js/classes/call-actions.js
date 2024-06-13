@@ -9,12 +9,15 @@ class CallActions {
             return Math.random() < 0.5;
         }
     
-    // agregar metodo leaveConversation que recibe un parámetro
-        leaveConversation(param) {
-    //generar alerta 
-            alert("To be implemented");
+    // Agregar método leaveConversation 
+    leaveConversation(showAlert) {
+        if (showAlert) {
+            const confirmLeave = confirm("Estás seguro que deseas abandonar la conversacion?");
+            if (!confirmLeave) return;
         }
+        ApiRTCHelper.leave();
     }
+}
     
     
     
