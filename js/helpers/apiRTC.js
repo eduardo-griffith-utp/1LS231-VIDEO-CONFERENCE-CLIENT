@@ -89,11 +89,12 @@ class ApiRTCHelper {
 
     static toggleVideo() {
         if (this.localStream) {
-            if (this.localStream.isVideoEnabled()) {
+            if (this.localStream.isVideoEnabled()) {  
                 this.localStream.disableVideo();
             } else {
                 this.localStream.enableVideo();
-            }
+            } 
+            return this.localStream.isVideoEnabled();
         } else {
             console.error('No local stream available to toggle video.');
         }

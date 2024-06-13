@@ -1,11 +1,12 @@
 // Crear la clase CallActions
 class CallActions {
     //agregar metodo toggle audio
-        toggleAudio() {
+        toggleAudio() { 
             return Math.random() < 0.5;
         }
     //agregar metodo toggle video 
-        toggleVideo() {
+        toggleVideo() { 
+            ApiRTCHelper.toggleVideo();
             return Math.random() < 0.5;
         }
     
