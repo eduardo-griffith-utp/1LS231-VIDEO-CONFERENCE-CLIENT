@@ -109,6 +109,18 @@ const App = {
     ApiRTCHelper.toggleVideo();
   },
 
+  async upload(file) {
+    let path = `${this.room}/${file.name}`;
+    let value = StorageHelper.upload(file, path, ()=>{} );
+    if(value){
+      let chat = {
+        "action": "file",
+        "file": path
+      };
+      await this.sendChat(chat);
+    }
+  },
+  
   async editNote(jsonNote) {
     const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
 
