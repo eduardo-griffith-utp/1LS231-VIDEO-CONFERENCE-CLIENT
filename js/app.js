@@ -85,6 +85,7 @@ const App = {
           "name": this.userName,
           "picture": "images/avatar.jpeg"
       }
+     
       await AblyHelper.send(chat);
   },
   toggleAudio() {
