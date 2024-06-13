@@ -1,8 +1,7 @@
 
 class NotesHelper {
   static add(note) {
-      const newId = "12345";
-      return newId;
+      return DatabaseHelper.addNote(note) ;
   }
   
   static delete(noteId) {
