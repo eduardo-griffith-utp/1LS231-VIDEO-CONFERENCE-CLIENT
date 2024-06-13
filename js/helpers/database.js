@@ -52,20 +52,20 @@ class DatabaseHelper {
   }
 
   static editNote(note) {
-    // Paso 1: Crear y Devolver una Nueva Promesa
+    //  Crear y Devolver una Nueva Promesa
     return new Promise((resolve, reject) => {
-      // Paso 2: Obtener la Referencia de la Nota a Editar
+      //  Obtener la Referencia de la Nota a Editar
       const noteRef = firebase.database().ref("notes").child(note.id);
 
-      // Paso 3: Actualizar la Nota en la Base de Datos
+      //  Actualizar la Nota en la Base de Datos
       noteRef
         .set(note)
         .then(() => {
-          // Paso 4: Resolver la Promesa
+          //  Resolver la Promesa
           resolve(true);
         })
         .catch((error) => {
-          // Paso 5: Rechazar la Promesa en Caso de Error
+          // Rechazar la Promesa en Caso de Error
           reject(error);
         });
     });
