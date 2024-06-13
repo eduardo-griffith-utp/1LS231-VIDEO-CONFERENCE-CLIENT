@@ -152,6 +152,9 @@ window.ondrop = async function (event) {
   event.preventDefault();
   const files = event.dataTransfer.files;
   console.log(files);
+  this.files.forEach(async file => {
+    await this.upload(file);
+  });
 };
 
 firebase.initializeApp(CONFIG.Firebase);
