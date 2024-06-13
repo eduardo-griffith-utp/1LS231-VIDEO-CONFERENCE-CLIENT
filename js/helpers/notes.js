@@ -18,10 +18,9 @@ class NotesHelper {
 }
 
 // salida de todas las notas
-async function view() {
-  const notes=[];
-  const containerPadre=getElementbyId("");
-  notes.forEach(note => {
+function notasExistentes(notes) {
+  const containerPadre = getElementbyId("");
+  notes.forEach((note) => {
     containerPadre.appendChild(note);
   });
 }
