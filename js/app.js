@@ -77,13 +77,7 @@ const App = {
           "picture": "images/avatar.jpeg"
       }
       await AblyHelper.send(chat);
-  },
-  toggleAudio() {
-    ApiRTCHelper.toggleAudio();
-  },
-  toggleVideo() {
-    ApiRTCHelper.toggleVideo();
-  },
+  }
 };
 
 document.addEventListener("alpine:init", () => {
