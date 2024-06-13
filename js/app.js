@@ -1,6 +1,6 @@
 const App = {
   mode: "light",
-  view: "call",
+  view: "files",
 
   userName: null,
   room: null,
