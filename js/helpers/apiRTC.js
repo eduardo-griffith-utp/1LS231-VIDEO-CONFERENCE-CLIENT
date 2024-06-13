@@ -98,6 +98,13 @@ class ApiRTCHelper {
             console.error('No local stream available to toggle video.');
         }
     }
+    
+    leaveConversation(showAlert) {
+        this.callActions.leaveConversation(showAlert);
+    }
+
+
+
 
     static isAudioEnabled() {
         if (this.localStream) {
