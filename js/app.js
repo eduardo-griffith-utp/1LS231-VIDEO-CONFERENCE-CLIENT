@@ -1,6 +1,6 @@
 const App = {
   mode: "light",
-  view: "call",
+  view: "files",
 
   userName: null,
   room: null,
@@ -30,6 +30,8 @@ const App = {
     let self = this;
     this.room = this.roomName;
     this.roomName = null;
+     // Inicializar el arreglo files con el resultado del llamado a getList de StorageHelper
+    this.files =  StorageHelper.getFiles();
 
      // Inicializacion del arreglo notes con el resultado de getList de NotesHelper
      this.notes = NotesHelper.getList(this.room);
@@ -70,8 +72,9 @@ const App = {
       (stream) => {
           this.streamList = this.streamList.filter(x => x.streamId != stream.streamId);
       }
-    );
+  );
   },
+
   async sendMessage() {
     await this.sendChat({
         "action": "chat",
@@ -101,6 +104,7 @@ const App = {
     this.notes = [];
     this.room = null;
     this.userName = null;
+
 },
 
 
@@ -110,8 +114,21 @@ const App = {
   },
   toggleVideo() {
     ApiRTCHelper.toggleVideo();
+
   },
 
+  async upload(file) {
+    let path = `${this.room}/${file.name}`;
+    let value = StorageHelper.upload(file, path, ()=>{} );
+    if(value){
+      let chat = {
+        "action": "file",
+        "file": path
+      };
+      await this.sendChat(chat);
+    }
+  },
+  
   async editNote(jsonNote) {
     const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
 
@@ -136,8 +153,7 @@ const App = {
         "id": noteId // id de la nota
        })
     }
-  },
-
+  }
 };
 
 document.addEventListener("alpine:init", () => {
@@ -152,6 +168,9 @@ window.ondrop = async function (event) {
   event.preventDefault();
   const files = event.dataTransfer.files;
   console.log(files);
+  this.files.forEach(async file => {
+    await this.upload(file);
+  });
 };
 
 firebase.initializeApp(CONFIG.Firebase);
