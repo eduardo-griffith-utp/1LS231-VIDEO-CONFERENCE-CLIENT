@@ -7,7 +7,7 @@ class CallActions {
     //agregar metodo toggle video 
         toggleVideo() { 
             ApiRTCHelper.toggleVideo();
-            return Math.random() < 0.5;
+            return ApiRTCHelper.toggleVideo();
         }
     
     // Agregar método leaveConversation 

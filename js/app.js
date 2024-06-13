@@ -100,14 +100,8 @@ const App = {
     this.notes = [];
     this.room = null;
     this.userName = null;
-},
+  },
 
-  toggleAudio() {
-    ApiRTCHelper.toggleAudio();
-  },
-  toggleVideo() {
-    ApiRTCHelper.toggleVideo();
-  },
 
   async editNote(jsonNote) {
     const editRes = NotesHelper.edit(jsonNote.id, jsonNote);
@@ -129,8 +123,7 @@ const App = {
         "id": noteId // id de la nota
        })
     }
-  },
-
+  }
 };
 
 document.addEventListener("alpine:init", () => {

@@ -94,7 +94,6 @@ class ApiRTCHelper {
             } else {
                 this.localStream.enableVideo();
             } 
-            return this.localStream.isVideoEnabled();
         } else {
             console.error('No local stream available to toggle video.');
         }
