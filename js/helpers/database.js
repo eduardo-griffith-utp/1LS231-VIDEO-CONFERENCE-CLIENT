@@ -71,6 +71,7 @@ class DatabaseHelper {
     });
   }
 
+  
   static deleteNote(idNote) {
     return true;
   }
