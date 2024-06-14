@@ -42,7 +42,35 @@ class StorageHelper {
         });
     }
 
-    static download(path) {  
-        return "https://google.com";
-    }
+    static download(path) {
+        const storage = getStorage(app);
+        const storageRef = ref(storage, path);
+        getDownloadURL(storageRef)
+          .then((url) => {
+            return fetch(url)
+              .then((response) => {
+                if (!response.ok) {
+                  throw new Error("Request mal echo");
+                }
+                return response.blob();
+              })
+              .then((blob) => {
+                const blobURL = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+    
+                link.href = blobURL;
+                link.download = path.split("/").pop();
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(blobURL);
+              })
+              .catch((error) => {
+                console.log("Error bajando archivo", error);
+              });
+          })
+          .catch((error) => {
+            console.log("Error obteniendo archivo", error);
+          });
+      }
 }
