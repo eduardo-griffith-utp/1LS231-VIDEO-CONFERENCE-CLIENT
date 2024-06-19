@@ -23,6 +23,7 @@
   body {
     --app-background: #eaebf5;
     --chat-background: #fff;
+    --hover-color: #3d42df;
     --link-color: #c0c1c5;
     --navigation-bg: #fff;
     --navigation-box-shadow: 0 2px 6px 0 rgba(136, 148, 171, 0.2), 0 24px 20px -24px rgba(71, 82, 107, 0.1);
@@ -122,8 +123,14 @@
     justify-content: center;
     height: 100%;
   }
-  
+
   .navigation {
+    position: relative;
+    padding: 125px 8px;
+    flex-basis: 120px;
+  }
+  
+  .navbar {
     display: flex;
     flex-direction: column;
     background-color: var(--navigation-bg);
@@ -136,8 +143,8 @@
     margin-top: 32px;
   }
   
-  .nav-link:hover svg, .nav-link.active svg {
-    color: #3d42df;
+  .nav-link:hover svg, .nav-link.active svg{
+    color: var(--hover-color);
   }
   
   .icon svg {
