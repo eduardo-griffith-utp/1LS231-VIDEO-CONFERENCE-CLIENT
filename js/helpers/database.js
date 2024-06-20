@@ -32,24 +32,23 @@ class DatabaseHelper {
     ];
   }
 
-  static addNote(note) {
-    let promesa = new Promise((resolve, reject) => {
-      const databaseRef = firebase.database().ref("notes");
-      const newNoteRef = databaseRef.push();
-
-      newNoteRef
-        .set(note)
-        .then(() => {
-          console.log(newNoteRef.key);
-          resolve(newNoteRef.key);
-        })
-        .catch((error) => {
-          reject(error);
+    static addNote(note) {
+        let promesa = new Promise((resolve, reject) => {
+            
+            const databaseRef = firebase.database().ref('notes');         
+            const newNoteRef = databaseRef.push();    
+       
+            newNoteRef.set(note).then(() => {
+                console.log(newNoteRef.key);
+                resolve(newNoteRef.key);
+            })
+            .catch((error) => {
+                reject(error);
+            });
         });
-    });
 
-    return promesa;
-  }
+        return promesa;
+    }
 
   static editNote(note) {
     //  Crear y Devolver una Nueva Promesa

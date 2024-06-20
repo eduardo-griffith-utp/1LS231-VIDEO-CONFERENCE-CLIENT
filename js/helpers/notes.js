@@ -1,7 +1,6 @@
 class NotesHelper {
   static add(note) {
-    const newId = "12345";
-    return newId;
+    return DatabaseHelper.addNote(note);
   }
 
   static delete(noteId) {
@@ -16,7 +15,6 @@ class NotesHelper {
     return DatabaseHelper.editNote(note);
   }
 }
-
 // salida de todas las notas
 function notasExistentes(notes) {
   const containerPadre = getElementbyId("");
@@ -24,3 +22,4 @@ function notasExistentes(notes) {
     containerPadre.appendChild(note);
   });
 }
+
