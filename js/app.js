@@ -148,20 +148,30 @@ const App = {
     }
   },
 
-  async goHome(){
-    this.leaveConversation(false)
-  },
+  async goHome() {
+    console.log("LLamamos desde button home");
+    // Salir de la conversación, si es necesario
+    //await this.leaveConversation(false);
+    const absolutePath = 'home.html';
+    // Redirigir a view/home.html
+    window.location.href = absolutePath;
+},
 
-  async deleteNote(noteId) {
-    const deleteRes = NotesHelper.delete(noteId);
+async deleteNote(noteId) {
+  const deleteRes = NotesHelper.delete(noteId);
 
-    if (deleteRes === true) {
-       await this.sendChat({
-        "action": "delete-note",
-        "id": noteId // id de la nota
-       })
-    }
+  if (deleteRes === true) {
+      await this.sendChat({
+          "action": "delete-note",
+          "id": noteId // id de la nota
+      })
   }
+},
+
+// Nuevo método para cambiar a la vista 'call'
+switchToCallView() {
+  this.view = 'call';
+}
 };
 
 document.addEventListener("alpine:init", () => {
