@@ -43,6 +43,7 @@ class StorageHelper {
     }
 
     static download(path) {
+      return new Promise((resolve, reject) => {
         const storage = getStorage(app);
         const storageRef = ref(storage, path);
         getDownloadURL(storageRef)
@@ -56,8 +57,9 @@ class StorageHelper {
               })
               .then((blob) => {
                 const blobURL = URL.createObjectURL(blob);
+                resolve(blobURL);
                 const link = document.createElement("a");
-    
+  
                 link.href = blobURL;
                 link.download = path.split("/").pop();
                 document.body.appendChild(link);
@@ -66,11 +68,14 @@ class StorageHelper {
                 URL.revokeObjectURL(blobURL);
               })
               .catch((error) => {
-                console.log("Error bajando archivo", error);
+                reject(error);
+                // console.log("Error bajando archivo", error);
               });
           })
           .catch((error) => {
-            console.log("Error obteniendo archivo", error);
+            reject(error);
+            // console.log("Error obteniendo archivo", error);
           });
-      }
-}
+      });
+    }
+  }
