@@ -82,7 +82,9 @@ const App = {
     });
     this.message = '';
   },
-
+  async download(filepath) {
+    return  StorageHelper.download(filepath)
+  },
   async sendChat(chat) {
       chat.sender = {
           "name": this.userName,
